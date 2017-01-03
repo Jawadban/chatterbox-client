@@ -8,11 +8,11 @@ var app = {
     var $message = $('#message').val();
     var $roomname = myFunction();
     var messages = {
+
       username: $username,
       text: $message,
       roomname: $roomname
     };
-    console.log(messages);
     $.ajax({
   // This is the url you should use to communicate with the parse API server.
       // url: 'https://api.parse.com/1/classes/messages',
@@ -31,11 +31,14 @@ var app = {
   fetch: function () {
     $.ajax({
       type: 'GET',
-      url: 'https://api.parse.com/1/classes/messages',
+      url: 'https://api.parse.com/1/classes/messages?-{createdAt}',
       data: JSON.stringify(message),
       contentType: 'application/json',
-      success: function () {
-        console.log('chatterbox: Message sent');
+      success: function (data) {
+        for (var i = 0; i < data.results.length; i++) {
+          var newObj = data.results[i];
+          $('#chats').append('<h3><a href= #>' + newObj.username + '</a></h3>');
+        }
       },
       error: function () {
         // See: https://developer.mozilla.org/en-US/docs/Web/API/console.error
@@ -45,8 +48,18 @@ var app = {
   },
   clearMessages: function() {
     $('#chats').empty();
+  },
+  renderMessage: function (message) {
+    $('#chats').append('<h3><a href=# class="username">' + message.username + " " + '</a>' + message.text + '</h3>');
+  },
+  renderRoom: function(value) {
+    $('#roomSelect').append('<option value=' + value + '>' + value + '</option>');
+  },
+  handleUsernameClick: function() {
+
   }
 };
 function myFunction() {
-  return $('.rooms').val();
+  return $('#roomSelect').val();
 };
+
