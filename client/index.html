@@ -35,13 +35,18 @@
         <option value="MainRoom" selected>MainRoom</option>
 
       </select><br><br>
-      USERNAME:
-      <input type="text" id='username' value="enter your username"><br><br>
-      MESSAGE:
-      <input type="text" id='message' value="text"><br><br>
-      <button id= 'submitMessage'>Submit</button>
-    </div>
 
-    <div id="chats"></div>
+    <form action="#" id='send' method="post">
+      First name: <input id='username' type="text" name="" value="dasf"><br>
+      Last name: <input id= 'message' type="text" name="" value="sdafdsaf"><br>
+    <input type="submit" name="Submit">
+  </form> 
+  <script>
+    $(function() {
+      app.init();
+    });
+  </script>
   </body>
 </html>
+  </div>
+    <div id="chats"></div>
