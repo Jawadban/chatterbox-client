@@ -1,9 +1,11 @@
 // YOUR CODE HERE:
+var result = '';
 var app = {
   server: 'https://api.parse.com/1/classes/messages',
   init: function () {
     $('.username').on('click', app.handleUsernameClick);
     $('#send').submit(app.handleSubmit);
+    app.fetch();
 
     // $('#send').on('submit', app.handleSubmit);
   },
@@ -24,6 +26,7 @@ var app = {
     });
   },
   fetch: function () {
+    //var query = {order: '-createdAt', where: {roomname: 'Chipotle'}};
     $.ajax({
       type: 'GET',
       url: 'https://api.parse.com/1/classes/messages',
@@ -32,9 +35,12 @@ var app = {
       success: function (data) {
         console.log(data);
         for (var i = 0; i < data.results.length; i++) {
-          var array = filterSentence(data.results[i])
 
-          app.renderMessage(array);
+          if (result === data.results[i].roomname) {
+            var array = filterSentence(data.results[i]);
+            app.renderMessage(array);
+          }
+            app.renderRoom(data.results[i].roomname);
         }
       },
       error: function () {
@@ -47,11 +53,9 @@ var app = {
     $('#chats').empty();
   },
   renderMessage: function (message) {
-    
-   // $('#chats').append('<div class="change"><a href=# class="username">' + message.username + " " + '</a>' + message.text + '</div>');
-$('#chats').append('<h5><a href=# class="username">' + message[0] + " " + '</a>' + message[1] + '</h5>');
+    $('#chats').append('<h5><a href=# class="username">' + message[0] + " " + '</a>' + message[1] + '</h5>')   
   },
-  renderRoom: function(value) {
+  renderRoom: function(value) {     
     $('#roomSelect').append('<option value=' + value + '>' + value + '</option>');
   },
   handleUsernameClick: function() {
@@ -60,26 +64,51 @@ $('#chats').append('<h5><a href=# class="username">' + message[0] + " " + '</a>'
   handleSubmit: function(event) {
     var $username = $('#username').val();
     var $message = $('#message').val();
+    var $addroom = $('#addroom').val();
+    console.log($addroom);
     var $roomname = myFunction();
-    var messages = {
+    if ($roomname) {
+      var messages = {
 
-      username: $username,
-      text: $message,
-      roomname: $roomname
-    };
+        username: $username,
+        text: $message,
+        roomname: $addroom,
+      };
+    } else {
+      var messages = {
+
+        username: $username,
+        text: $message,
+        roomname: $roomname,
+      };
+    } 
+   
+    // console.log(messages);
     app.send(messages);
+    setInterval(function() {
+      app.fetch();
+    }, 3000);
     event.preventDefault();
   }
 };
 
 function myFunction() {
-  return $('#roomSelect').val();
+  result = $('#roomSelect').val();
+  app.clearMessages();
+  app.fetch();
+  return result;
 };
 function filterSentence(obj) {
   if (obj.username && obj.text) {
     var username = obj.username.match(/[a-z0-9]+/gi).join(' ');
-    var text = obj.text.match(/[a-z0-9]+/gi).join(' '); 
+    var text = obj.text.match(/[a-z0-9]+/gi).join(' ');
+    // if (username ) {
+    //   username.join(' ');
+    //   text.join(' ');
+    // } else if (text) {
+    //   text.join(' ');
+    // }
   }
-  return [username, text];
+  return [username, text, obj.roomname];
 }
 

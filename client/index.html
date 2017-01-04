@@ -29,18 +29,23 @@
       <h1>chatterbox</h1>
       <!-- Your HTML goes here! -->
       ROOMS:
-      <select id="roomSelect" onchange="myFunction()">
-        <option value="Friends">Friends</option>
-        <option value="Cheese">Cheese</option>
+      <select id="roomSelect" class="roomSelect" onchange="myFunction()">
         <option value="MainRoom" selected>MainRoom</option>
 
       </select><br><br>
+      <!-- Add Room:
+       <select id="roomSelect" class="roomSelect" onchange="myFunction()">
 
+
+      </select><br><br> -->
     <form action="#" id='send' method="post">
-      First name: <input id='username' type="text" name="" value="dasf"><br>
-      Last name: <input id= 'message' type="text" name="" value="sdafdsaf"><br>
+      Add Room: <input id='addroom' type="text" name="" placeholder="ex:Friends"><br>
+      Username: <input id='username' type="text" name="" placeholder="ex:zoghayyer"><br>
+      Message: <input id= 'message' type="text" name="" placeholder="Hello!!"><br>
     <input type="submit" name="Submit">
   </form> 
+  </div>
+  <div id="chats"></div>
   <script>
     $(function() {
       app.init();
@@ -48,5 +53,3 @@
   </script>
   </body>
 </html>
-  </div>
-    <div id="chats"></div>
